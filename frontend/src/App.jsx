@@ -113,6 +113,12 @@ function App() {
           } />
 
           {/* Importer Pipeline */}
+          <Route path="/import" element={
+            <ProtectedRoute>
+              <ImportCSV />
+            </ProtectedRoute>
+          } />
+
           <Route path="/groups/:id/import" element={
             <ProtectedRoute>
               <ImportCSV />

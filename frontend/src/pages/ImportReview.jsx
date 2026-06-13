@@ -12,7 +12,8 @@ import {
   HelpCircle,
   Copy,
   TrendingUp,
-  ChevronRight
+  ChevronRight,
+  AlertCircle
 } from 'lucide-react';
 
 const ImportReview = () => {
@@ -25,6 +26,7 @@ const ImportReview = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [activeFilter, setActiveFilter] = useState('all');
 
   // Resolution map: anomalyId -> { decision: string, data: object }
   const [resolutions, setResolutions] = useState({});
@@ -53,10 +55,24 @@ const ImportReview = () => {
   }, [importId]);
 
   const handleDecisionChange = (anomalyId, type, decision, data = null) => {
-    setResolutions(prev => ({
-      ...prev,
-      [anomalyId]: { decision, data }
-    }));
+    setResolutions(prev => {
+      if (!decision) {
+        const updated = { ...prev };
+        delete updated[anomalyId];
+        return updated;
+      }
+      const current = prev[anomalyId];
+      if (current && current.decision === decision) {
+        // Toggle OFF (deselect)
+        const updated = { ...prev };
+        delete updated[anomalyId];
+        return updated;
+      }
+      return {
+        ...prev,
+        [anomalyId]: { decision, data }
+      };
+    });
   };
 
   const handleApprove = async () => {
@@ -188,125 +204,216 @@ const ImportReview = () => {
         </div>
       )}
 
+      {/* Progress & Summary Bar */}
+      <div className="glass-panel p-6 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="space-y-1.5 flex-grow">
+          <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider">
+            <span className="text-slate-400">Resolution Progress</span>
+            <span className="text-slate-200 font-mono">
+              {Object.keys(resolutions).filter(id => resolutions[id]?.decision).length} / {anomalies.length} Resolved
+            </span>
+          </div>
+          <div className="w-full h-2 rounded-full bg-slate-800/80 overflow-hidden">
+            <div 
+              className="h-full bg-slate-200 dark:bg-slate-150 transition-all duration-500" 
+              style={{ width: `${(Object.keys(resolutions).filter(id => resolutions[id]?.decision).length / anomalies.length) * 105}%` }}
+            />
+          </div>
+        </div>
+        <div className="flex-shrink-0 flex items-center gap-3">
+          {anomalies.length - Object.keys(resolutions).filter(id => resolutions[id]?.decision).length > 0 ? (
+            <div className="flex items-center gap-2 text-yellow-500 bg-yellow-500/10 border border-yellow-500/20 px-3.5 py-2 rounded-xl text-xs font-semibold">
+              <AlertTriangle className="w-4 h-4 animate-pulse" />
+              <span>{anomalies.length - Object.keys(resolutions).filter(id => resolutions[id]?.decision).length} remaining</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3.5 py-2 rounded-xl text-xs font-semibold">
+              <CheckCircle className="w-4 h-4" />
+              <span>All resolved! Ready to import</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Filter Tabs */}
+      <div className="flex border-b border-slate-850 mb-6 gap-2">
+        <button
+          onClick={() => setActiveFilter('all')}
+          className={`px-4 py-2.5 text-xs uppercase tracking-wider font-extrabold border-b-2 transition-all ${
+            activeFilter === 'all'
+              ? 'border-slate-100 text-slate-100'
+              : 'border-transparent text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          All ({anomalies.length})
+        </button>
+        <button
+          onClick={() => setActiveFilter('pending')}
+          className={`px-4 py-2.5 text-xs uppercase tracking-wider font-extrabold border-b-2 transition-all ${
+            activeFilter === 'pending'
+              ? 'border-slate-100 text-slate-100'
+              : 'border-transparent text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          Pending Action ({anomalies.length - Object.keys(resolutions).filter(id => resolutions[id]?.decision).length})
+        </button>
+        <button
+          onClick={() => setActiveFilter('resolved')}
+          className={`px-4 py-2.5 text-xs uppercase tracking-wider font-extrabold border-b-2 transition-all ${
+            activeFilter === 'resolved'
+              ? 'border-slate-100 text-slate-100'
+              : 'border-transparent text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          Resolved ({Object.keys(resolutions).filter(id => resolutions[id]?.decision).length})
+        </button>
+      </div>
+
       {/* ANOMALIES LIST */}
       <div className="space-y-6">
         {anomalies.length === 0 ? (
           <div className="glass-panel p-10 text-center text-slate-400">
             No anomalies found! All rows are clean and valid. Click "Approve & Save" to proceed with importing.
           </div>
-        ) : (
-          anomalies.map((anom) => {
-            const currentRes = resolutions[anom.id] || { decision: '', data: null };
-            
-            return (
-              <div 
-                key={anom.id}
-                className={`glass-panel p-6 border-l-4 transition-all duration-300 ${
-                  currentRes.decision 
-                    ? 'border-l-emerald-500 bg-slate-900/20' 
-                    : anom.severity === 'critical' || anom.severity === 'high' 
-                    ? 'border-l-rose-500 bg-rose-500/5' 
-                    : 'border-l-yellow-500 bg-yellow-500/5'
-                }`}
-              >
-                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                  {/* Left detail */}
-                  <div className="space-y-2 flex-1">
-                    <div className="flex items-center gap-3 flex-wrap">
-                      <span className="text-xs font-bold text-slate-400 bg-slate-800 px-2 py-0.5 rounded">Row {anom.row_number}</span>
-                      {getSeverityBadge(anom.severity)}
-                      <span className="font-extrabold text-slate-200 text-sm">{anom.type}</span>
-                      {currentRes.decision && (
-                        <span className="text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-md flex items-center gap-1">
-                          Resolved: {currentRes.decision}
-                        </span>
-                      )}
+        ) : anomalies.filter(anom => {
+            const isResolved = !!resolutions[anom.id]?.decision;
+            if (activeFilter === 'pending') return !isResolved;
+            if (activeFilter === 'resolved') return isResolved;
+            return true;
+          }).length === 0 ? (
+            <div className="glass-panel p-10 text-center text-slate-500">
+              No anomalies match the selected filter.
+            </div>
+          ) : (
+          anomalies
+            .filter(anom => {
+              const isResolved = !!resolutions[anom.id]?.decision;
+              if (activeFilter === 'pending') return !isResolved;
+              if (activeFilter === 'resolved') return isResolved;
+              return true;
+            })
+            .map((anom) => {
+              const currentRes = resolutions[anom.id] || { decision: '', data: null };
+              const isResolved = !!currentRes.decision;
+              
+              return (
+                <div 
+                  key={anom.id}
+                  className={`glass-panel p-6 border-l-4 transition-all duration-300 ${
+                    isResolved 
+                      ? 'border-l-emerald-500 bg-slate-900/10 opacity-70' 
+                      : anom.severity === 'critical' || anom.severity === 'high' 
+                      ? 'border-l-rose-500 bg-rose-500/5' 
+                      : 'border-l-yellow-500 bg-yellow-500/5'
+                  }`}
+                >
+                  <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+                    {/* Left detail */}
+                    <div className="space-y-2.5 flex-1">
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 bg-slate-800 px-2 py-0.5 rounded border border-slate-700/60">Row {anom.row_number}</span>
+                        {getSeverityBadge(anom.severity)}
+                        <span className="font-extrabold text-slate-200 text-sm tracking-tight">{anom.type}</span>
+                        {isResolved && (
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 px-2.5 py-0.5 rounded-full border border-emerald-500/20 flex items-center gap-1 animate-fade-in">
+                            <CheckCircle className="w-3 h-3" />
+                            Resolved: {currentRes.decision.replace('_', ' ')}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-sm text-slate-300 font-medium">{anom.description}</p>
+                      <p className="text-xs text-slate-500 leading-relaxed bg-slate-950/45 p-2.5 rounded-lg border border-slate-900/60">
+                        <strong className="text-slate-400 uppercase tracking-wider text-[10px] block mb-1">Recommendation</strong>
+                        {anom.suggested_action}
+                      </p>
                     </div>
-                    <p className="text-sm text-slate-300">{anom.description}</p>
-                    <p className="text-xs text-slate-500 leading-normal">
-                      <strong className="text-slate-400">Recommendation:</strong> {anom.suggested_action}
-                    </p>
-                  </div>
 
-                  {/* Right: Actions / Resolutions selectors */}
-                  <div className="md:w-72 flex-shrink-0 flex flex-col justify-end gap-3 border-t md:border-t-0 border-slate-800/60 pt-4 md:pt-0">
-                    
-                    {/* Action decision buttons */}
-                    {anom.type === 'Unknown member' && (
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Map User To</label>
-                        <select
-                          value={currentRes.data?.mappedUserId || ''}
-                          onChange={(e) => handleDecisionChange(anom.id, anom.type, 'map_user', { mappedUserId: e.target.value })}
-                          className="w-full glass-input text-xs py-1.5"
-                        >
-                          <option value="">-- Select Member --</option>
-                          {groupMembers.map(m => (
-                            <option key={m.id} value={m.id}>{m.name} ({m.email})</option>
-                          ))}
-                        </select>
-                      </div>
-                    )}
+                    {/* Right: Actions / Resolutions selectors */}
+                    <div className="md:w-80 flex-shrink-0 flex flex-col justify-end gap-3 border-t md:border-t-0 border-slate-800/60 pt-4 md:pt-0">
+                      
+                      {/* Action decision buttons */}
+                      {anom.type === 'Unknown member' && (
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Map User To</label>
+                          <select
+                            value={currentRes.data?.mappedUserId || ''}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              if (!val) {
+                                handleDecisionChange(anom.id, anom.type, '');
+                              } else {
+                                handleDecisionChange(anom.id, anom.type, 'map_user', { mappedUserId: val });
+                              }
+                            }}
+                            className="w-full glass-input text-xs py-2 pr-8"
+                          >
+                            <option value="">-- Select Member --</option>
+                            {groupMembers.map(m => (
+                              <option key={m.id} value={m.id}>{m.name} ({m.email})</option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
 
-                    {(anom.type === 'Duplicate expenses' || anom.type === 'Near duplicate expenses') && (
-                      <div className="flex gap-2">
+                      {(anom.type === 'Duplicate expenses' || anom.type === 'Near duplicate expenses') && (
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleDecisionChange(anom.id, anom.type, 'merge')}
+                            className={`flex-1 text-xs py-2.5 px-3 rounded-xl font-bold uppercase tracking-wider border transition-all duration-150 ${
+                              currentRes.decision === 'merge' 
+                                ? 'bg-slate-200 text-slate-950 border-slate-200' 
+                                : 'bg-slate-950/80 text-slate-400 border-slate-800 hover:text-slate-250 hover:border-slate-700'
+                            }`}
+                          >
+                            Merge / Skip
+                          </button>
+                          <button
+                            onClick={() => handleDecisionChange(anom.id, anom.type, 'keep_both')}
+                            className={`flex-1 text-xs py-2.5 px-3 rounded-xl font-bold uppercase tracking-wider border transition-all duration-150 ${
+                              currentRes.decision === 'keep_both' 
+                                ? 'bg-slate-200 text-slate-950 border-slate-200' 
+                                : 'bg-slate-950/80 text-slate-400 border-slate-800 hover:text-slate-250 hover:border-slate-700'
+                            }`}
+                          >
+                            Keep Both
+                          </button>
+                        </div>
+                      )}
+
+                      {anom.type === 'Settlement logged as expense' && (
                         <button
-                          onClick={() => handleDecisionChange(anom.id, anom.type, 'merge')}
-                          className={`flex-1 text-xs py-2 px-3 rounded-lg font-semibold border ${
-                            currentRes.decision === 'merge' 
-                              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500' 
-                              : 'bg-slate-950/80 text-slate-400 border-slate-800 hover:text-slate-300'
+                          onClick={() => handleDecisionChange(anom.id, anom.type, 'map_settlement')}
+                          className={`w-full text-xs py-2.5 px-3 rounded-xl font-bold uppercase tracking-wider border flex items-center justify-center gap-1.5 transition-all duration-150 ${
+                            currentRes.decision === 'map_settlement'
+                              ? 'bg-slate-200 text-slate-950 border-slate-200'
+                              : 'bg-slate-950/80 text-slate-400 border-slate-800 hover:text-slate-250 hover:border-slate-700'
                           }`}
                         >
-                          Merge / Skip
+                          <TrendingUp className="w-3.5 h-3.5" />
+                          Import as Settlement
                         </button>
+                      )}
+
+                      {/* Generic warning resolutions */}
+                      {anom.type !== 'Unknown member' && anom.type !== 'Duplicate expenses' && anom.type !== 'Near duplicate expenses' && anom.type !== 'Settlement logged as expense' && (
                         <button
-                          onClick={() => handleDecisionChange(anom.id, anom.type, 'keep_both')}
-                          className={`flex-1 text-xs py-2 px-3 rounded-lg font-semibold border ${
-                            currentRes.decision === 'keep_both' 
-                              ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500' 
-                              : 'bg-slate-950/80 text-slate-400 border-slate-800 hover:text-slate-300'
+                          onClick={() => handleDecisionChange(anom.id, anom.type, 'ignore_warning')}
+                          className={`w-full text-xs py-2.5 px-3 rounded-xl font-bold uppercase tracking-wider border flex items-center justify-center gap-1.5 transition-all duration-150 ${
+                            currentRes.decision === 'ignore_warning'
+                              ? 'bg-slate-200 text-slate-950 border-slate-200'
+                              : 'bg-slate-950/80 text-slate-400 border-slate-800 hover:text-slate-250 hover:border-slate-700'
                           }`}
                         >
-                          Keep Both
+                          <CheckCircle className="w-3.5 h-3.5" />
+                          Acknowledge & Ignore
                         </button>
-                      </div>
-                    )}
+                      )}
 
-                    {anom.type === 'Settlement logged as expense' && (
-                      <button
-                        onClick={() => handleDecisionChange(anom.id, anom.type, 'map_settlement')}
-                        className={`w-full text-xs py-2 px-3 rounded-lg font-semibold border flex items-center justify-center gap-1.5 ${
-                          currentRes.decision === 'map_settlement'
-                            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500'
-                            : 'bg-slate-950/80 text-slate-400 border-slate-800 hover:text-slate-300'
-                        }`}
-                      >
-                        <TrendingUp className="w-3.5 h-3.5" />
-                        Import as Settlement Transaction
-                      </button>
-                    )}
-
-                    {/* Generic warning resolutions */}
-                    {anom.type !== 'Unknown member' && anom.type !== 'Duplicate expenses' && anom.type !== 'Near duplicate expenses' && anom.type !== 'Settlement logged as expense' && (
-                      <button
-                        onClick={() => handleDecisionChange(anom.id, anom.type, 'ignore_warning')}
-                        className={`w-full text-xs py-2 px-3 rounded-lg font-semibold border flex items-center justify-center gap-1.5 ${
-                          currentRes.decision === 'ignore_warning'
-                            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500'
-                            : 'bg-slate-950/80 text-slate-400 border-slate-800 hover:text-slate-300'
-                        }`}
-                      >
-                        <CheckCircle className="w-3.5 h-3.5" />
-                        Acknowledge & Ignore
-                      </button>
-                    )}
-
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })
+              );
+            })
         )}
       </div>
 

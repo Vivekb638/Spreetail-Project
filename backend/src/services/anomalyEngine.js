@@ -1,5 +1,13 @@
 const { logAction } = require('./auditService');
 
+// Helper to format Date objects or string dates safely for anomaly descriptions
+const formatDateString = (dateVal) => {
+  if (!dateVal) return 'Active';
+  const d = new Date(dateVal);
+  if (isNaN(d.getTime())) return 'Active';
+  return d.toISOString().split('T')[0];
+};
+
 // Helper to check description similarity
 const isSimilarDescription = (desc1, desc2) => {
   const d1 = desc1.toLowerCase().replace(/[^a-z0-9]/g, ' ').trim();
@@ -348,7 +356,7 @@ const detectAnomalies = (rows, groupMembers) => {
             row_number: rowNumber,
             severity: 'high',
             type: 'Expense outside membership period',
-            description: `Payer ${payerObj.name} was not a member on ${rawDate}. (Joined: ${payerObj.joined_at.split('T')[0]}, Left: ${payerObj.left_at ? payerObj.left_at.split('T')[0] : 'Active'})`,
+            description: `Payer ${payerObj.name} was not a member on ${rawDate}. (Joined: ${formatDateString(payerObj.joined_at)}, Left: ${formatDateString(payerObj.left_at)})`,
             suggested_action: 'Adjust date, or change payer.',
             status: 'Pending'
           });
@@ -364,7 +372,7 @@ const detectAnomalies = (rows, groupMembers) => {
             row_number: rowNumber,
             severity: 'high',
             type: 'Expense outside membership period',
-            description: `Participant ${part.name} was not active on ${rawDate}. (Joined: ${part.joined_at.split('T')[0]}, Left: ${part.left_at ? part.left_at.split('T')[0] : 'Active'})`,
+            description: `Participant ${part.name} was not active on ${rawDate}. (Joined: ${formatDateString(part.joined_at)}, Left: ${formatDateString(part.left_at)})`,
             suggested_action: `Remove ${part.name} from split on this date.`,
             status: 'Pending'
           });

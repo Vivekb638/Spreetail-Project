@@ -68,4 +68,29 @@
 - **Pros/Cons**:
   - *Option 1*: Standard file upload, but introduces server disk-write overheads, multipart boundary parsing, and is not serverless-friendly.
   - *Option 2*: Extremely clean, avoids server write access requirements, runs perfectly on AWS Lambda (read-only filesystem), and is completely immune to disk capacity leaks.
-- **Final Choice**: **Option 2**. React reads the CSV text client-side and posts it inside a JSON request, keeping the backend completely stateless and diskless.
+- Final Choice: **Option 2**. React reads the CSV text client-side and posts it inside a JSON request, keeping the backend completely stateless and diskless.
+
+---
+
+## 7. Global vs. Context-Aware Import Navigation
+- **Problem**: Deciding the UX route for the "Import CSV" main navigation action.
+- **Options Considered**:
+  1. A static header link routing to a general page listing all groups, prompting selection every time.
+  2. A context-aware route: checks the current pathname, dynamically matching active group ID. If inside a group (e.g. group view, timeline, balances), it routes directly to `/groups/:id/import`. If outside, it falls back to a selective dashboard screen.
+- **Pros/Cons**:
+  - *Option 1*: Simple routing logic, but forces repetitive selections for users already engaged in active group screens.
+  - *Option 2*: Provides instant upload entry points for active workflows, saving click count while offering group selectors as safety fallbacks.
+- **Final Choice**: **Option 2**. Location matching regular expressions are processed on route changes to ensure context-aware navigation.
+
+---
+
+## 8. Password Security UI (Show/Hide Visibility)
+- **Problem**: Enhancing credentials safety on shared screens.
+- **Options Considered**:
+  1. Relying strictly on standard HTML browser password dots.
+  2. Absolute positioned toggler button shifting password text fields dynamically between `password` and `text` input modes.
+- **Pros/Cons**:
+  - *Option 1*: Safest on projection screens, but causes frequent typos on complex passwords without verification feedback.
+  - *Option 2*: Minimizes typos and frustration, especially during testing or registration audits. Requires careful spacing to prevent characters from overlapping the icons.
+- **Final Choice**: **Option 2**. The input field uses dynamic type states linked to `Eye` / `EyeOff` icons, protected by container padding-right `pr-12` and absolute icon alignment.
+

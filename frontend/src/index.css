@@ -4,16 +4,51 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Pure monochrome Light Mode (White background, black text, neutral grays) */
+  --slate-50: 0 0 0;
+  --slate-100: 0 0 0;
+  --slate-200: 0 0 0;
+  --slate-300: 38 38 38;
+  --slate-400: 82 82 82;
+  --slate-500: 115 115 115;
+  --slate-600: 163 163 163;
+  --slate-700: 212 212 212;
+  --slate-800: 229 229 229;
+  --slate-850: 245 245 245;
+  --slate-900: 255 255 255;
+  --slate-950: 255 255 255;
+  
+  --bg-gradient: none;
+}
+
+.dark {
+  /* Pure monochrome Dark Mode (Pure black background, white text, dark neutral grays) */
+  --slate-50: 255 255 255;
+  --slate-100: 255 255 255;
+  --slate-200: 245 245 245;
+  --slate-300: 212 212 212;
+  --slate-400: 163 163 163;
+  --slate-500: 115 115 115;
+  --slate-600: 82 82 82;
+  --slate-700: 64 64 64;
+  --slate-800: 38 38 38;
+  --slate-850: 26 26 26;
+  --slate-900: 18 18 18;
+  --slate-950: 0 0 0;
+  
+  --bg-gradient: none;
+}
+
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-100 font-sans antialiased selection:bg-indigo-500 selection:text-white;
-    background-image: 
-      radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
+    @apply bg-slate-950 text-slate-100 font-sans antialiased selection:bg-indigo-500 selection:text-white transition-colors duration-200;
+    background-image: var(--bg-gradient);
     background-attachment: fixed;
     min-height: 100vh;
   }
 }
+
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
@@ -42,8 +77,12 @@
   @apply bg-slate-950/80 border border-slate-800/80 rounded-xl px-4 py-2 text-slate-100 placeholder-slate-500 outline-none focus:border-indigo-500 transition-colors duration-300;
 }
 
+.glass-input-icon {
+  @apply bg-slate-950/80 border border-slate-800/80 rounded-xl pl-12 pr-4 py-2.5 text-slate-100 placeholder-slate-500 outline-none focus:border-indigo-500 transition-colors duration-300;
+}
+
 .btn-primary {
-  @apply bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-semibold px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-600/20 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:pointer-events-none;
+  @apply bg-slate-100 text-slate-950 hover:bg-slate-200 font-semibold px-5 py-2.5 rounded-xl active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:pointer-events-none;
 }
 
 .btn-secondary {
@@ -82,7 +121,7 @@
 }
 
 .custom-table td {
-  @apply border-b border-slate-850 px-6 py-4;
+  @apply border-b border-slate-800/50 px-6 py-4;
 }
 
 .custom-table tr:last-child td {

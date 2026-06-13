@@ -38,6 +38,14 @@ graph TD
     I --> J[Generate Import Report PDF/JSON]
 ```
 
+## Interactive Anomaly Review Wizard Features
+
+To handle Meera's request for complete approval control without overwhelming the user during bulk imports, the wizard implements:
+1. **Interactive Progress Bar**: Dynamically counts and displays the ratio of resolved anomalies to total anomalies.
+2. **Filtering Tabs**: Split into `All`, `Pending Action`, and `Resolved` lists. This lets the user hide already resolved anomalies and focus entirely on remaining items.
+3. **Toggle Deselection**: Clicking a selected resolution choice button again toggles it off, returning it to an unresolved status.
+4. **Member Dropdown Reversal**: Selecting `-- Select Member --` resets mapped name decisions to pending.
+
 ---
 
 ## Database ER Diagram

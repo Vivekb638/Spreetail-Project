@@ -35,3 +35,12 @@
 - **Why it was Wrong**: If seeding users succeeded but seeding the default group failed (e.g. duplicate constraints), the database was left in a partially seeded, inconsistent state. This caused subsequent setup attempts to fail due to foreign key violations.
 - **How it was Discovered**: Manual review of the error catching blocks identified that nested inserts lacked rolled-back transaction pools.
 - **Final Correction**: Wrapped database seeds in explicit SQL `BEGIN`, `COMMIT`, and `ROLLBACK` transaction blocks, and added `ON CONFLICT` constraints to safely allow re-running initialization scripts.
+
+---
+
+### Example 4: CSS Specificity Overriding Tailwind Utility Paddings
+- **What the AI Suggested**: Setting absolute-positioned icons inside inputs and expecting utility padding classes (like `pl-11`) to push the text cursor rightwards when using a custom `.glass-input` class.
+- **Why it was Wrong**: The custom `.glass-input` class defined explicit padding `px-4` in `index.css`. In the built asset hierarchy, the component class rules had higher specificity or were evaluated after Tailwind utilities, causing the left-padding to collapse back to `16px`. This resulted in the user's input text visually overwriting the background icons.
+- **How it was Discovered**: Visual inspection of the signup/login pages during manual registration workflows.
+- **Final Correction**: Refined `index.css` to include a dedicated `.glass-input-icon` class. This class explicitly sets `pl-12` and `pr-4` inside the sheet, securing proper spacing.
+

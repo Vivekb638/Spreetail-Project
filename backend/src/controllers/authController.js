@@ -186,9 +186,40 @@ const refresh = async (req, res) => {
   }
 };
 
+// PUT /auth/profile
+const updateProfile = async (req, res) => {
+  const { name } = req.body;
+  const userId = req.user.id;
+
+  if (!name || name.trim() === '') {
+    return res.status(400).json({ error: 'Name is required.' });
+  }
+
+  try {
+    const result = await db.query(
+      'UPDATE users SET name = $1 WHERE id = $2 RETURNING id, name, email, created_at',
+      [name.trim(), userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    return res.json({
+      message: 'Profile updated successfully.',
+      user: result.rows[0]
+    });
+  } catch (err) {
+    console.error('updateProfile error:', err);
+    return res.status(500).json({ error: 'Database error updating profile.' });
+  }
+};
+
 module.exports = {
   register,
   login,
   logout,
-  refresh
+  refresh,
+  updateProfile
 };
+

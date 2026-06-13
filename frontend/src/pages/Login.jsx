@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Wallet, Mail, Lock, Loader2 } from 'lucide-react';
+import { Wallet, Mail, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const { login } = useAuth();
@@ -59,14 +60,14 @@ const Login = () => {
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-wider text-slate-400">Email Address</label>
             <div className="relative">
-              <Mail className="absolute left-4 top-3 h-5 w-5 text-slate-500" />
+              <Mail className="absolute left-4 top-3.5 h-5 w-5 text-slate-500" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full pl-11 glass-input"
+                className="w-full glass-input-icon"
               />
             </div>
           </div>
@@ -74,15 +75,27 @@ const Login = () => {
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-wider text-slate-400">Password</label>
             <div className="relative">
-              <Lock className="absolute left-4 top-3 h-5 w-5 text-slate-500" />
+              <Lock className="absolute left-4 top-3.5 h-5 w-5 text-slate-500" />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-11 glass-input"
+                className="w-full glass-input-icon pr-12"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-3.5 text-slate-500 hover:text-slate-300 transition-colors"
+                title={showPassword ? "Hide Password" : "Show Password"}
+              >
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
             </div>
           </div>
 

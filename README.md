@@ -10,16 +10,17 @@ A production-ready Shared Expenses Application designed for tracking expenses, m
 ---
 
 ## Features
-1. **User Authentication**: Register, Login, Token Refresh (JWT rotating rotation mechanism), secure Logout.
+1. **User Authentication**: Secure signup and login with a password visibility toggle (eye icon), rotating JWT session validation, and secure logout.
 2. **Groups & Memberships**: Historical timeline tracking (`joined_at`, `left_at`) to ensure expenses are split only during active periods.
 3. **Expense split types**: Equal, exact unequal amounts, percentage splits, and share ratios.
 4. **Settlements Engine**: Record peer-to-peer settlements separate from expenses.
-5. **Multi-Currency Support**: Record transactions in USD/INR with automated historical rate conversions.
-6. **Balance Engine**: Calculates total paid, total owed, net balance, and provides simplified settlements (transaction minimization).
-7. **Traceable Explanations**: Granular ledger showing every transaction contributing to a member's final balance.
-8. **Interactive CSV Importer**: High-fidelity anomaly scanner checking for 15 spreadsheet anomalies with interactive correction review.
-9. **Export Formats**: PDF and JSON exports of CSV import validation reports.
-10. **Audit Trail**: Tracking logs on edits, imports, creations, and overrides.
+5. **Multi-Currency Support**: Record USD/INR transactions with automated historical rate locking.
+6. **Balance Engine**: Calculates total paid, total owed, net balance, and provides Aisha's simplified repayments (greedy minimizer).
+7. **Traceable Explanations**: Granular ledger showing Rohan's detailed expense explanations.
+8. **Interactive CSV Importer**: High-fidelity anomaly scanner checking for 15 spreadsheet anomalies with interactive correction review. Includes progress tracking, interactive tabs (All, Pending, Resolved), and decision toggle-deselect checks.
+9. **Global Navigation**: Header link pointing to group imports dynamically, with group selection selectors for non-group pages.
+10. **Export Formats**: PDF and JSON exports of CSV import validation reports.
+11. **Audit Trail**: Tracking logs on database events, viewable in the Admin History panel.
 
 ---
 

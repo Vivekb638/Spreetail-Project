@@ -1,6 +1,3 @@
-const axios = require('axios'); // Wait, since this is a Vite project, we can use standard import or standard CommonJS if we are not strict. Vite uses ES Modules by default.
-// Let's write it using ES Module syntax (import/export) because it is parsed by Vite in the browser!
-// Yes, the browser React code must use ES modules syntax.
 
 import axios from 'axios';
 

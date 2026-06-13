@@ -8,7 +8,8 @@ import {
   FolderOpen, 
   Loader2, 
   AlertCircle,
-  FileText
+  FileText,
+  FileSpreadsheet
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -83,7 +84,7 @@ const Dashboard = () => {
 
       {loading ? (
         <div className="flex flex-col items-center justify-center py-20 text-slate-500 gap-3">
-          <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
+          <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
           <p className="text-sm">Loading groups...</p>
         </div>
       ) : groups.length === 0 ? (
@@ -110,21 +111,33 @@ const Dashboard = () => {
               className="glass-card p-6 flex flex-col justify-between cursor-pointer group active:scale-98"
             >
               <div>
-                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700/60 flex items-center justify-center text-slate-200 group-hover:bg-slate-700 transition-all duration-300 mb-4">
                   <FolderOpen className="w-5 h-5" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-200 group-hover:text-indigo-400 transition-colors">
+                <h3 className="text-lg font-bold text-slate-200 group-hover:text-slate-100 transition-colors">
                   {group.name}
                 </h3>
                 <p className="text-sm text-slate-400 mt-1 line-clamp-2 h-10">
                   {group.description || 'No description provided.'}
                 </p>
               </div>
-              <div className="mt-6 border-t border-slate-800/60 pt-4 flex items-center justify-between text-xs text-slate-500">
-                <span className="font-semibold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-md">
-                  {group.active_member_count || 1} members active
-                </span>
-                <span>Created {new Date(group.created_at).toLocaleDateString()}</span>
+              <div className="mt-6 border-t border-slate-800/60 pt-4 flex flex-col gap-3">
+                <div className="flex items-center justify-between text-xs text-slate-500">
+                  <span className="font-semibold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-md">
+                    {group.active_member_count || 1} members active
+                  </span>
+                  <span>Created {new Date(group.created_at).toLocaleDateString()}</span>
+                </div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/groups/${group.id}/import`);
+                  }}
+                  className="w-full btn-secondary text-xs py-2 flex items-center justify-center gap-1.5 hover:bg-slate-800 transition-colors"
+                >
+                  <FileSpreadsheet className="w-3.5 h-3.5" />
+                  Import CSV
+                </button>
               </div>
             </div>
           ))}

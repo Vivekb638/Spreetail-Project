@@ -11,4 +11,8 @@ router.post('/refresh', authController.refresh);
 // though we can also process by just deleting the refresh token.
 router.post('/logout', authController.logout);
 
+// Update name/profile
+router.put('/profile', authMiddleware, authController.updateProfile);
+
 module.exports = router;
+
