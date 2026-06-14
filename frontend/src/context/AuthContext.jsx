@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -24,8 +24,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setLoading(true);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const res = await axios.post(`${apiUrl}/auth/login`, { email, password });
+      const res = await API.post('/auth/login', { email, password });
       const { user: userData, accessToken, refreshToken } = res.data;
       
       localStorage.setItem('user', JSON.stringify(userData));
@@ -42,8 +41,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (name, email, password) => {
     setLoading(true);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const res = await axios.post(`${apiUrl}/auth/register`, { name, email, password });
+      const res = await API.post('/auth/register', { name, email, password });
       const { user: userData, accessToken, refreshToken } = res.data;
 
       localStorage.setItem('user', JSON.stringify(userData));
@@ -60,10 +58,9 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     setLoading(true);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
       const refreshToken = localStorage.getItem('refreshToken');
       if (refreshToken) {
-        await axios.post(`${apiUrl}/auth/logout`, { refreshToken }).catch(() => {});
+        await API.post('/auth/logout', { refreshToken }).catch(() => {});
       }
     } finally {
       localStorage.removeItem('user');

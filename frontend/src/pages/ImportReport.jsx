@@ -40,7 +40,7 @@ const ImportReport = () => {
 
   const handleDownload = (format) => {
     const token = localStorage.getItem('accessToken');
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    const apiUrl = API.defaults.baseURL || 'http://localhost:5000';
     // Open in a new tab with access token as a query parameter or download directly using fetch.
     // Fetch is safer because it passes authorization header natively!
     fetch(`${apiUrl}/imports/${importId}/report/export?format=${format}`, {
