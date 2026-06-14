@@ -87,8 +87,8 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start Server (Avoid starting if we are executing tests via supertest)
-if (process.env.NODE_ENV !== 'test') {
+// Start Server (Avoid starting if we are executing tests via supertest or running on Vercel)
+if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`Shared Expenses Backend Server running on port ${PORT}`);
   });
