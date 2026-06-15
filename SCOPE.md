@@ -48,6 +48,16 @@ To handle Meera's request for complete approval control without overwhelming the
 
 ---
 
+## Dark/Light Theme Customization
+
+To support full visibility across multiple light/dark environments:
+1. **Theme-Aware Typography**: The CSS layout variables dynamically adapt to light/dark class selectors. Systematic replacement of hardcoded `text-white` classes with the dynamic `text-slate-100` class ensures all page layouts (Dashboard, Expense details, Settlements, User Profiles, Auth screens) are beautifully visible in both dark/night and light/day modes.
+2. **Selective Contrast Preservations**: High-contrast items like button states or items inside active colored containers keep the `text-white` class, retaining premium readability on indigo, emerald, or rose backgrounds.
+
+
+
+---
+
 ## Database ER Diagram
 
 ```mermaid

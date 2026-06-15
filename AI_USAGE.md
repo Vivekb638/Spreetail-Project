@@ -44,3 +44,21 @@
 - **How it was Discovered**: Visual inspection of the signup/login pages during manual registration workflows.
 - **Final Correction**: Refined `index.css` to include a dedicated `.glass-input-icon` class. This class explicitly sets `pl-12` and `pr-4` inside the sheet, securing proper spacing.
 
+---
+
+### Example 5: Undefined `DATABASE_URL` Causing Startup Crash on Vercel Node Serverless Function
+- **What the AI Suggested**: Initializing the PG Pool directly and checking `process.env.DATABASE_URL.includes('supabase')` on file import in `db.js`.
+- **Why it was Wrong**: During serverless build and warm-up phases on Vercel, the environment variables might be unconfigured or loading. Accessing `.includes()` on an undefined `DATABASE_URL` threw a `TypeError` and crashed the serverless function instantly, causing `FUNCTION_INVOCATION_FAILED` (500) errors.
+- **How it was Discovered**: Visiting the backend `/health` endpoint and observing the 500 error page with `FUNCTION_INVOCATION_FAILED`.
+- **Final Correction**: Added safety checks in `backend/src/config/db.js` to handle missing environment variables gracefully on load, allowing the server process to start and handle connection requests or return descriptive health statuses.
+
+---
+
+### Example 6: Tracked `node_modules` Causing Linux Binary Mismatch in Vercel
+- **What the AI Suggested**: Directly deploying the backend directory to Vercel with existing file structures.
+- **Why it was Wrong**: The `backend/node_modules` directory was previously tracked and committed in Git. Vercel used these Windows-compiled dependencies instead of building them cleanly, leading to ABI/native module loading failures on Vercel's Linux runtime environment.
+- **How it was Discovered**: Observing that backend `/health` still threw 500 crashes after environment variables were saved, and running `git ls-files` to confirm that `node_modules` was tracked in git.
+- **Final Correction**: Untracked `backend/node_modules` from Git using `git rm -r --cached backend/node_modules`, committed, and pushed. This forced Vercel to install fresh Linux-compatible dependencies on redeployment.
+
+
+

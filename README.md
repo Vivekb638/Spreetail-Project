@@ -4,7 +4,7 @@ A production-ready Shared Expenses Application designed for tracking expenses, m
 
 ## Tech Stack
 - **Frontend**: React.js (Vite), React Router v6, Tailwind CSS, Axios, Lucide Icons
-- **Backend**: Node.js, Express.js, JWT, Bcrypt, Helmet, Express-Rate-Limit, PDFKit
+- **Backend**: Node.js, Express.js, JWT, Bcryptjs (pure JS), Helmet, Express-Rate-Limit, PDFKit
 - **Database**: PostgreSQL (designed for portability between Supabase and AWS RDS)
 
 ---
@@ -26,8 +26,9 @@ A production-ready Shared Expenses Application designed for tracking expenses, m
 
 ## Environment Variables
 
-Configure these inside `backend/.env`:
+### Local Development Setup
 
+Configure these inside `backend/.env`:
 ```env
 PORT=5000
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/shared_expenses
@@ -37,11 +38,29 @@ CORS_ORIGIN=http://localhost:5173
 NODE_ENV=development
 ```
 
-Configure these inside `frontend/.env` (optional, defaults to port 5000):
-
+Configure these inside `frontend/.env`:
 ```env
 VITE_API_URL=http://localhost:5000
 ```
+
+### Production Setup (Vercel)
+
+When deploying to Vercel, do not commit your `.env` files. Instead, set the following environment variables in the Vercel project settings dashboards:
+
+#### Backend Settings
+* `NODE_ENV`: `production`
+* `DATABASE_URL`: Your Supabase or AWS RDS connection string.
+* `CORS_ORIGIN`: Your deployed frontend URL (e.g. `https://spreetail-project-3u94.vercel.app`).
+* `JWT_SECRET` & `JWT_REFRESH_SECRET`: Secure, random keys.
+* `SUPABASE_PUBLISHABLE_KEY` & `SUPABASE_SECRET_KEY`: Set keys from your Supabase console.
+
+#### Frontend Settings
+* `VITE_API_URL`: Your deployed backend URL (e.g. `https://spreetail-project-xi.vercel.app`).
+
+> [!NOTE]
+> Make sure `node_modules` is not committed or tracked in your Git repository (`git rm -r --cached **/node_modules` if tracked). Committing local `node_modules` will cause Vercel build compilation crashes.
+
+
 
 ---
 

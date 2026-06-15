@@ -94,3 +94,17 @@
   - *Option 2*: Minimizes typos and frustration, especially during testing or registration audits. Requires careful spacing to prevent characters from overlapping the icons.
 - **Final Choice**: **Option 2**. The input field uses dynamic type states linked to `Eye` / `EyeOff` icons, protected by container padding-right `pr-12` and absolute icon alignment.
 
+---
+
+## 9. Native Dependency Isolation for Serverless Compatibility
+- **Problem**: Deciding how to hash and verify user passwords in a serverless environment (like Vercel).
+- **Options Considered**:
+  1. Continue using `bcrypt` and configure native compilation builders for Vercel's Amazon Linux runtime.
+  2. Switch to `bcryptjs`, a pure JavaScript library with an identical API that runs everywhere without compilation steps.
+- **Pros/Cons**:
+  - *Option 1*: Marginally faster execution speeds for high volumes, but frequently causes compilation crashes and native binary mismatches in serverless deployment cycles (especially when code is pushed from Windows environments).
+  - *Option 2*: Eliminates the compiler dependency entirely. Guarantees 100% platform-independent behavior, ensuring error-free deployments on Vercel, Netlify, AWS Lambda, or local Windows/Linux developer machines.
+- **Final Choice**: **Option 2**. We replaced the native `bcrypt` package with the pure JS `bcryptjs` drop-in wrapper.
+
+
+
