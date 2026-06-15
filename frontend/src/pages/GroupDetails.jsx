@@ -106,7 +106,7 @@ const GroupDetails = () => {
             <ChevronRight className="w-3.5 h-3.5" />
             <span>Details</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-white font-sans">{group.name}</h1>
+          <h1 className="text-3xl font-extrabold text-slate-100 font-sans">{group.name}</h1>
           <p className="text-sm text-slate-400 mt-1">{group.description}</p>
         </div>
         
@@ -144,7 +144,7 @@ const GroupDetails = () => {
         
         {/* EXPENSES SECTION */}
         <div className="glass-panel p-6">
-          <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+          <h2 className="text-xl font-bold text-slate-100 mb-6 flex items-center gap-3">
             <TrendingDown className="w-5 h-5 text-indigo-400" />
             Expenses History ({expenses.length})
           </h2>
@@ -210,7 +210,7 @@ const GroupDetails = () => {
 
         {/* SETTLEMENTS SECTION */}
         <div className="glass-panel p-6">
-          <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+          <h2 className="text-xl font-bold text-slate-100 mb-6 flex items-center gap-3">
             <TrendingUp className="w-5 h-5 text-emerald-400" />
             Settlements History ({settlements.length})
           </h2>

@@ -104,7 +104,7 @@ const Settlements = () => {
         <span>Record Settlement</span>
       </div>
 
-      <h1 className="text-3xl font-extrabold text-white mb-8 font-sans flex items-center gap-3">
+      <h1 className="text-3xl font-extrabold text-slate-100 mb-8 font-sans flex items-center gap-3">
         <HandCoins className="w-8 h-8 text-emerald-400" />
         Record Settlement Payment
       </h1>

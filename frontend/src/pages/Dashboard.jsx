@@ -63,7 +63,7 @@ const Dashboard = () => {
     <Layout>
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-white font-sans">Dashboard</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight text-slate-100 font-sans">Dashboard</h1>
           <p className="text-slate-400 text-sm mt-1">Manage, import, and split flat expenses cleanly.</p>
         </div>
         <button
@@ -148,7 +148,7 @@ const Dashboard = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="w-full max-w-md glass-panel p-8 animate-fade-in relative">
-            <h3 className="text-xl font-bold text-white mb-6">Create New Group</h3>
+            <h3 className="text-xl font-bold text-slate-100 mb-6">Create New Group</h3>
             
             <form onSubmit={handleCreateGroup} className="space-y-4">
               <div className="space-y-1.5">

@@ -164,7 +164,7 @@ const ImportReview = () => {
 
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 border-b border-slate-800/60 pb-6">
         <div>
-          <h1 className="text-3xl font-extrabold text-white font-sans flex items-center gap-3">
+          <h1 className="text-3xl font-extrabold text-slate-100 font-sans flex items-center gap-3">
             <ShieldAlert className="w-8 h-8 text-amber-500" />
             Interactive Anomaly Review
           </h1>

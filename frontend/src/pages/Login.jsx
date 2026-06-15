@@ -44,7 +44,7 @@ const Login = () => {
           <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-emerald-500 flex items-center justify-center shadow-xl shadow-indigo-500/20 mb-4">
             <Wallet className="w-7 h-7 text-white" />
           </div>
-          <h2 className="text-2xl font-extrabold tracking-tight text-white font-sans">Welcome back</h2>
+          <h2 className="text-2xl font-extrabold tracking-tight text-slate-100 font-sans">Welcome back</h2>
           <p className="text-sm text-slate-400 mt-1">Sign in to manage your flat expenses</p>
         </div>
 

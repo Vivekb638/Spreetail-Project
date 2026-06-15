@@ -49,7 +49,7 @@ const UserProfile = () => {
     <Layout>
       <div className="flex items-center justify-between gap-6 mb-8 border-b border-slate-800/60 pb-6">
         <div>
-          <h1 className="text-3xl font-extrabold text-white font-sans flex items-center gap-3">
+          <h1 className="text-3xl font-extrabold text-slate-100 font-sans flex items-center gap-3">
             <User className="w-8 h-8 text-slate-100" />
             My Profile
           </h1>
@@ -112,7 +112,7 @@ const UserProfile = () => {
                 </form>
               ) : (
                 <div className="flex items-center gap-3">
-                  <h2 className="text-xl font-bold text-white">{user?.name || 'Loading Name...'}</h2>
+                  <h2 className="text-xl font-bold text-slate-100">{user?.name || 'Loading Name...'}</h2>
                   <button
                     onClick={() => {
                       setNewName(user?.name || '');

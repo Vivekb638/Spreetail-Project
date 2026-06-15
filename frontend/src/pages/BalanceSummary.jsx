@@ -92,7 +92,7 @@ const BalanceSummary = () => {
 
       <div className="flex items-center justify-between gap-6 mb-8 border-b border-slate-800/60 pb-6">
         <div>
-          <h1 className="text-3xl font-extrabold text-white font-sans flex items-center gap-3">
+          <h1 className="text-3xl font-extrabold text-slate-100 font-sans flex items-center gap-3">
             <Calculator className="w-8 h-8 text-indigo-400" />
             Group Balance & Settlements
           </h1>
@@ -111,7 +111,7 @@ const BalanceSummary = () => {
 
       {/* AISHA'S REQUIREMENT: SIMPLIFIED SETTLEMENTS HERO */}
       <div className="glass-panel p-6 border-l-4 border-l-emerald-500 mb-8">
-        <h2 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+        <h2 className="text-lg font-bold text-slate-100 mb-2 flex items-center gap-2">
           <HelpCircle className="w-5 h-5 text-emerald-400" />
           Aisha's Summary: Final Settlements
         </h2>
@@ -143,7 +143,7 @@ const BalanceSummary = () => {
 
       {/* BALANCES SUMMARY TABLE */}
       <div className="glass-panel p-6 mb-8">
-        <h2 className="text-lg font-bold text-white mb-4">Member Balances overview</h2>
+        <h2 className="text-lg font-bold text-slate-100 mb-4">Member Balances overview</h2>
         <div className="table-container">
           <table className="custom-table">
             <thead>
@@ -205,7 +205,7 @@ const BalanceSummary = () => {
       {/* ROHAN'S REQUIREMENT: TRACEABILITY EXPLORER */}
       {selectedLedger && (
         <div className="glass-panel p-6 animate-fade-in">
-          <h2 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
+          <h2 className="text-xl font-bold text-slate-100 mb-2 flex items-center gap-2">
             <User className="w-5 h-5 text-indigo-400" />
             Explainability Audit: {selectedLedger.user.name}
           </h2>

@@ -200,7 +200,7 @@ const ExpenseForm = () => {
         <span>{isEditMode ? 'Edit Expense' : 'Add Expense'}</span>
       </div>
 
-      <h1 className="text-3xl font-extrabold text-white mb-8 font-sans flex items-center gap-3">
+      <h1 className="text-3xl font-extrabold text-slate-100 mb-8 font-sans flex items-center gap-3">
         <TrendingDown className="w-8 h-8 text-indigo-400" />
         {isEditMode ? 'Edit Expense Transaction' : 'Record New Expense'}
       </h1>
@@ -216,7 +216,7 @@ const ExpenseForm = () => {
         
         {/* DETAILS SECTION */}
         <div className="lg:col-span-2 glass-panel p-6 space-y-4">
-          <h2 className="text-lg font-bold text-white mb-4">Transaction Details</h2>
+          <h2 className="text-lg font-bold text-slate-100 mb-4">Transaction Details</h2>
 
           <div className="space-y-1.5">
             <label className="text-xs font-bold uppercase tracking-wider text-slate-400">Expense Title</label>
@@ -315,7 +315,7 @@ const ExpenseForm = () => {
         {/* SPLIT ENGINE COLUMN */}
         <div className="glass-panel p-6 flex flex-col justify-between h-fit space-y-6">
           <div>
-            <h2 className="text-lg font-bold text-white mb-4">Split configuration</h2>
+            <h2 className="text-lg font-bold text-slate-100 mb-4">Split configuration</h2>
             
             <div className="space-y-1.5 mb-6">
               <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Split Method</label>

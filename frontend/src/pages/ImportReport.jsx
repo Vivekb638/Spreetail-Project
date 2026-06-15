@@ -103,7 +103,7 @@ const ImportReport = () => {
 
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 border-b border-slate-800/60 pb-6">
         <div>
-          <h1 className="text-3xl font-extrabold text-white font-sans flex items-center gap-3">
+          <h1 className="text-3xl font-extrabold text-slate-100 font-sans flex items-center gap-3">
             <FileCheck className="w-8 h-8 text-emerald-500" />
             CSV Import Validation Report
           </h1>
@@ -139,7 +139,7 @@ const ImportReport = () => {
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
         <div className="glass-panel p-5 text-center">
           <span className="text-[10px] uppercase font-bold text-slate-500 block mb-1">Total Rows</span>
-          <span className="text-2xl font-extrabold text-white">{meta.total_rows}</span>
+          <span className="text-2xl font-extrabold text-slate-100">{meta.total_rows}</span>
         </div>
         <div className="glass-panel p-5 text-center">
           <span className="text-[10px] uppercase font-bold text-slate-500 block mb-1">Imported Rows</span>
@@ -163,7 +163,7 @@ const ImportReport = () => {
 
       {/* ANOMALIES TABLE SUMMARY */}
       <div className="glass-panel p-6">
-        <h2 className="text-xl font-bold text-white mb-6">Resolution Log ({anomalies.length})</h2>
+        <h2 className="text-xl font-bold text-slate-100 mb-6">Resolution Log ({anomalies.length})</h2>
 
         {anomalies.length === 0 ? (
           <p className="text-slate-400 text-center py-6">All rows were valid. No anomalies were encountered.</p>

@@ -80,7 +80,7 @@ const ExpenseDetail = () => {
           <ArrowLeft className="w-4 h-4" />
         </button>
         <div>
-          <h1 className="text-3xl font-extrabold text-white font-sans">{expense.title}</h1>
+          <h1 className="text-3xl font-extrabold text-slate-100 font-sans">{expense.title}</h1>
           <p className="text-sm text-slate-400 mt-1">Detailed splits breakdown.</p>
         </div>
       </div>
@@ -89,7 +89,7 @@ const ExpenseDetail = () => {
         {/* DETAIL SHEET */}
         <div className="lg:col-span-2 glass-panel p-8 space-y-6">
           <div className="border-b border-slate-800/60 pb-6">
-            <h2 className="text-lg font-bold text-white mb-4">Transaction Details</h2>
+            <h2 className="text-lg font-bold text-slate-100 mb-4">Transaction Details</h2>
             <div className="grid grid-cols-2 gap-y-4 gap-x-8 text-sm">
               <div>
                 <span className="text-slate-500 font-semibold block mb-1">Paid By</span>
@@ -123,7 +123,7 @@ const ExpenseDetail = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-white mb-2">Description / Notes</h2>
+            <h2 className="text-lg font-bold text-slate-100 mb-2">Description / Notes</h2>
             <p className="text-slate-350 text-sm leading-relaxed">{expense.description || 'No description provided.'}</p>
           </div>
         </div>
@@ -131,7 +131,7 @@ const ExpenseDetail = () => {
         {/* SPLITS BREAKDOWN */}
         <div className="glass-panel p-6 h-fit space-y-6">
           <div>
-            <h3 className="font-bold text-white text-base flex items-center gap-2 mb-2">
+            <h3 className="font-bold text-slate-100 text-base flex items-center gap-2 mb-2">
               <Users className="w-5 h-5 text-indigo-400" />
               Split Shares ({splits.length})
             </h3>

@@ -100,7 +100,7 @@ const ImportCSV = () => {
           <span>Import CSV</span>
         </div>
 
-        <h1 className="text-3xl font-extrabold text-white mb-8 font-sans flex items-center gap-3">
+        <h1 className="text-3xl font-extrabold text-slate-100 mb-8 font-sans flex items-center gap-3">
           <FileSpreadsheet className="w-8 h-8 text-amber-500" />
           Import Expenses Export CSV
         </h1>
@@ -115,7 +115,7 @@ const ImportCSV = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* GROUP SELECTOR COLUMN */}
           <div className="lg:col-span-2 glass-panel p-8">
-            <h2 className="text-xl font-bold text-white mb-2">Select a Group</h2>
+            <h2 className="text-xl font-bold text-slate-100 mb-2">Select a Group</h2>
             <p className="text-slate-400 text-sm mb-6 font-medium">Choose the group you would like to import the spreadsheet into.</p>
 
             {loadingGroups ? (
@@ -156,7 +156,7 @@ const ImportCSV = () => {
 
           {/* INFO COLUMN */}
           <div className="glass-panel p-6 h-fit space-y-4">
-            <h3 className="font-bold text-white text-base flex items-center gap-2">
+            <h3 className="font-bold text-slate-100 text-base flex items-center gap-2">
               <Info className="w-5 h-5 text-indigo-400" />
               Import Guidelines
             </h3>
@@ -184,7 +184,7 @@ const ImportCSV = () => {
         <span>Import CSV</span>
       </div>
 
-      <h1 className="text-3xl font-extrabold text-white mb-8 font-sans flex items-center gap-3">
+      <h1 className="text-3xl font-extrabold text-slate-100 mb-8 font-sans flex items-center gap-3">
         <FileSpreadsheet className="w-8 h-8 text-amber-500" />
         Import Expenses Export CSV
       </h1>
@@ -248,7 +248,7 @@ const ImportCSV = () => {
 
         {/* INFO COLUMN */}
         <div className="glass-panel p-6 h-fit space-y-4">
-          <h3 className="font-bold text-white text-base flex items-center gap-2">
+          <h3 className="font-bold text-slate-100 text-base flex items-center gap-2">
             <Info className="w-5 h-5 text-indigo-400" />
             Import Guidelines
           </h3>
