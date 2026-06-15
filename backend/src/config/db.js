@@ -1,11 +1,12 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
+const connectionString = process.env.DATABASE_URL;
+const isSupabase = connectionString && connectionString.includes('supabase');
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  // If we are connecting to Supabase or AWS RDS, they usually require SSL.
-  // In development, we can make it optional based on URL or environment.
-  ssl: process.env.NODE_ENV === 'production' || process.env.DATABASE_URL.includes('supabase')
+  connectionString,
+  ssl: process.env.NODE_ENV === 'production' || isSupabase
     ? { rejectUnauthorized: false }
     : false
 });
